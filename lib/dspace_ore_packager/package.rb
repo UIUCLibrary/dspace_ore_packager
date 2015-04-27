@@ -52,17 +52,35 @@ module DspaceOrePackager
       # puts @key
       # puts @value
 
+      @pair = Array.new
+
+      @json = '[';
+
       len = @key.length - 1
       for i in 0..len
-        @pair = {:key=> @key[i], :value=> @value[i], :language=>"#{@language}"}
-        puts @pair.to_json
+        # if @pair.any? { |hash| hash[':key'].include?(@key[i]) } then
+        #   data = 0
+        # else
+        data = {:key=> @key[i], :value=> @value[i], :language=>"#{@language}"}
+        @json += "{\"key\":\"#{@key[i]}\", \"value\":\"#{@value[i]}\", \"language\":\"#{@language}\"}"
+        @json += ','
+        # end
+        # @pair.store(:key,@key[i])
+        # @pair.store(:value,@value[i])
+        @pair.push(data)
       end
 
+      @json = @json.chop
+      @json += "]"
 
-      @a = @key.map{|e| {:key => e}}
-      @b = @value.map{|e| {:value => e}}
-      # puts @a
-      # puts @b
+      puts @json
+
+
+
+      # Works for single occurrence of an element as index always returns the value of the first object in self
+      # @a = @key.map{|e| {:key => e, :language => "en_US", :value => @value[@key.index(e)]}}
+      # puts @a.to_json
+
 
       @sample = [
           {
@@ -79,8 +97,8 @@ module DspaceOrePackager
               :key=> "dc.date.accessioned",
           :language=> "null",
       :value=> "2014-09-18T16:00:43Z"
-      },]
-      puts @sample.to_json
+      }]
+      # puts @sample.to_json
 
 
       # @ars.each do |aggResource|
