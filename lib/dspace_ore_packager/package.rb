@@ -30,19 +30,15 @@ module DspaceOrePackager
 
     def processAgg
 
-      # puts @agg_dcterms[2]
-
-      # @agg_dcterms.xpath('//h3/a[@class="1"]').each do |dcterms:title|
-      #   puts dcterms:title.content
-
+      # Extract
       for term in @agg_dcterms
-        if term.to_s() =~ /<.*:(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then  #extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
+        if term.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then  #extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
           name =       ($1).to_s
           name_value = ($2).to_s
-        elsif term.to_s() =~ /^.*?:(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then   #extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
+        elsif term.to_s() =~ /^<(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then   #extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
           name =       ($1).to_s
           name_value = ($2).to_s
-        elsif term.to_s() =~  /^.*?:(.*?)>(.*)<.*/ and $1.to_s()!= "" then  #extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
+        elsif term.to_s() =~  /^<(.*?)>(.*)<.*/ and $1.to_s()!= "" then  #extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
           name =       ($1).to_s
           name_value = ($2).to_s
         end
@@ -52,26 +48,18 @@ module DspaceOrePackager
       # puts @key
       # puts @value
 
-      @pair = Array.new
 
-      @json = '[';
+      @json = '['
 
       len = @key.length - 1
       for i in 0..len
-        # if @pair.any? { |hash| hash[':key'].include?(@key[i]) } then
-        #   data = 0
-        # else
-        data = {:key=> @key[i], :value=> @value[i], :language=>"#{@language}"}
+        @key[i].sub!(':','.')
         @json += "{\"key\":\"#{@key[i]}\", \"value\":\"#{@value[i]}\", \"language\":\"#{@language}\"}"
         @json += ','
-        # end
-        # @pair.store(:key,@key[i])
-        # @pair.store(:value,@value[i])
-        @pair.push(data)
       end
 
       @json = @json.chop
-      @json += "]"
+      @json += ']'
 
       puts @json
 
@@ -81,24 +69,6 @@ module DspaceOrePackager
       # @a = @key.map{|e| {:key => e, :language => "en_US", :value => @value[@key.index(e)]}}
       # puts @a.to_json
 
-
-      @sample = [
-          {
-          :key=> "dc.coverage.temporal",
-          :language=> "en_US",
-          :value=> "1911"
-      },
-          {
-              :key=> "dc.creator",
-          :language=> "en_US",
-          :value=> "Hirsch, Edwin F. (Edwin Frederick), 1886-1972."
-      },
-          {
-              :key=> "dc.date.accessioned",
-          :language=> "null",
-      :value=> "2014-09-18T16:00:43Z"
-      }]
-      # puts @sample.to_json
 
 
       # @ars.each do |aggResource|
