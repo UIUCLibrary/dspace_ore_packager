@@ -1,24 +1,24 @@
-{
-    [
-        {
-            "key": "dc.contributor.author",
-            "language": "en_US",
-            "value": "Khan, Nushrat"
-        },
-        {
-            "key": "dc.description",
-            "language": "en_US",
-            "value": "DESCRIPTION"
-        },
-        {
-            "key": "dc.description.abstract",
-            "language": "en_US",
-            "value": "ABSTRACT"
-        },
-        {
-            "key": "dc.title",
-            "language": "en_US",
-            "value": "Test Item"
-        }
-    ]
-}
+
+[
+  {
+    "key": "dc.contributor.author",
+    "language": "en_US",
+    "value": "Khan, Nushrat"
+  },
+  {
+    "key": "dc.description",
+    "language": "en_US",
+    "value": "DESCRIPTION"
+  },
+  {
+    "key": "dc.description.abstract",
+    "language": "en_US",
+    "value": "ABSTRACT"
+  },
+  {
+    "key": "dc.title",
+    "language": "en_US",
+    "value": "Test Item"
+  }
+]
+

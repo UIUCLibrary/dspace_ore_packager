@@ -9,27 +9,32 @@ require 'nokogiri'
 
 # Set the request parameters
 host = 'http://localhost:8080'
-puts 'Enter e-mail address '
-user = gets.chomp
-# Password input without being displayed
-pwd = ask("Enter password: "){|q| q.echo = false}
 
-begin
-  response = RestClient.post("#{host}/rest/login", {"email" => "#{user}", "password" => "#{pwd}"}.to_json,
-                              {:content_type => 'application/json',
-                              :accept => 'application/json'})
-  login_token = response.to_str
-  puts login_token
+puts 'Would you like to login?'
+ans1 = gets.chomp
+if ans1 == 'y' then
+  puts 'Enter e-mail address '
+  user = gets.chomp
+  # Password input without being displayed
+  pwd = ask("Enter password: "){|q| q.echo = false}
 
-rescue => e
-  puts "ERROR: #{e}"
+  begin
+    response = RestClient.post("#{host}/rest/login", {"email" => "#{user}", "password" => "#{pwd}"}.to_json,
+                               {:content_type => 'application/json',
+                                :accept => 'application/json'})
+    login_token = response.to_str
+    puts "Your login token is: #{login_token}"
+
+  rescue => e
+    puts "ERROR: #{e}"
+  end
 end
 
 #Get the collection ID to POST (create) an item
 puts "Would you like to create an item?\nAnswer in y/n"
-ans1 = gets.chomp
+ans2 = gets.chomp
 
-if ans1 == 'y' then
+if ans2 == 'y' then
   puts 'Enter the handle ID of the collection'
   handle_id = gets.chomp
   begin
@@ -42,10 +47,11 @@ if ans1 == 'y' then
   else puts 'Cannot get collection ID'
 end
 
+#POST an item
 puts "Would you like to create an item under that collection?\nAnswer in y/n"
-ans2 = gets.chomp
+ans3 = gets.chomp
 
-if ans2 == 'y' then
+if ans3 == 'y' then
   puts 'Creating an item.'
   begin
     item = RestClient.post("#{host}/rest/collections/#{collectionid}/items",{"type" => "item"}.to_json,
@@ -53,12 +59,17 @@ if ans2 == 'y' then
     puts item.to_str
     puts "Response status: #{item.code}"
     getitemid = JSON.parse(item)
-    puts "Item ID is: #{getitemid["id"]}"
+    itemid = "#{getitemid["id"]}"
+    puts "Item ID is: #{itemid}"
   end
 else
   puts 'Redo if you would like to create an item'
 end
 
-# POST format for DSpace
-# curl -X POST -H "Content-Type: application/json" -H "rest-dspace-token: a8929bbf-6430-4552-8e28-17acfcc9e7a5" -d '{"name":"test2", "type":"item"}' http://localhost:8080/rest/collections/530/items
-#curl -X PUT -H "Content-Type: application/json" -H "rest-dspace-token:a8929bbf-6430-4552-8e28-17acfcc9e7a5" -d '[{"key":"dc.title", "value":"Test Item", "language":"en"}, {"key": "dc.creator", "value":"Nushrat", "language":"en"}]' http://localhost:8080/rest/items/55390/metadata
+test_json = '[{"key":"dcterms.modified", "value":"2014-03-24T11:32:03-0400", "language":"en"},{"key":"dcterms.identifier", "value":"http://sead-test/fakeUri/0489a707-d428-4db4-8ce0-1ace548bc653", "language":"en"},{"key":"dcterms.title", "value":"Test update", "language":"en"}]'
+
+begin
+  metadata = RestClient.put("#{host}/rest/items/#{itemid}/metadata", "#{test_json}",
+                         {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{login_token}" })
+  puts "Response status: #{metadata.code}"
+end

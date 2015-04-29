@@ -49,19 +49,18 @@ module DspaceOrePackager
       # puts @value
 
 
-      @json = '['
-
+      @terms = "'["
       len = @key.length - 1
       for i in 0..len
         @key[i].sub!(':','.')
-        @json += "{\"key\":\"#{@key[i]}\", \"value\":\"#{@value[i]}\", \"language\":\"#{@language}\"}"
-        @json += ','
+        @terms += "{\"key\":\"#{@key[i]}\", \"value\":\"#{@value[i]}\", \"language\":\"#{@language}\"}"
+        @terms += ','
       end
 
-      @json = @json.chop
-      @json += ']'
+      @terms = @terms.chop
+      @terms += "]'"
 
-      puts @json
+      puts @terms
 
 
 
