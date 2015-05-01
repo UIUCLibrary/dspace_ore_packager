@@ -1,0 +1,294 @@
+<v1:opmGraph xmlns:v1="http://openprovenance.org/model/v1.1.a">
+    <v1:processes>
+      <v1:process id="Process_1">
+        <v1:annotation>
+          <v1:property uri="process-type">
+            <v1:value>
+              <type>SERVICE</type>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-workflowID">
+            <v1:value>
+              <workflowID>Vortex2_Visualization</workflowID>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-serviceID">
+            <v1:value>
+              <serviceID>Data Visualization</serviceID>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-timestep">
+            <v1:value>
+              <timestep>3</timestep>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-workflowNodeID">
+            <v1:value>
+              <workflowNodeID>https://scholarworks.iu.edu/iuswdark</workflowNodeID>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+        <v1:annotation id="Process-Annotation_14">
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference2">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase: Daily Regional Weather Forecasts in Support of Vortex2</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Techniques">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">1.Visualization visually conveys points in space and time where weather forecast captured a confirmed tornado siting;
+2.Visualization uses times series and three-dimensional geospatial visualization techniques to display spatial distribution and temporal relation for Vortex2 data set;
+3.The video employs voice-over and text to convey importance of forecast in relation to actual weather</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">http://www.worldwidetelescope.org</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase.pptx</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference2">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase: Daily Regional Weather Forecasts in Support of Vortex2</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Techniques">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">1.Visualization visually conveys points in space and time where weather forecast captured a confirmed tornado siting;
+2.Visualization uses times series and three-dimensional geospatial visualization techniques to display spatial distribution and temporal relation for Vortex2 data set;
+3.The video employs voice-over and text to convey importance of forecast in relation to actual weather</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">http://www.worldwidetelescope.org</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase.pptx</v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:process>
+      <v1:process id="Process_2">
+        <v1:annotation>
+          <v1:property uri="process-type">
+            <v1:value>
+              <type>SERVICE</type>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-workflowID">
+            <v1:value>
+              <workflowID>Vortex2_Visualization</workflowID>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-serviceID">
+            <v1:value>
+              <serviceID>Massive Data Mining</serviceID>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-timestep">
+            <v1:value>
+              <timestep>2</timestep>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-workflowNodeID">
+            <v1:value>
+              <workflowNodeID>https://scholarworks.iu.edu/iuswdark</workflowNodeID>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+        <v1:annotation id="Process-Annotation_17">
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Techniques">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">1.Extract spatial data( geospatial bounding box) for each forecast day;
+2. Extract temporal data to make spatial data  time-tagged
+3.Extract data annotations such as organization, location name, etc..
+4.Add visualization features such as altitude, color for each geospatial point</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase: Daily Regional Weather Forecasts in Support of Vortex2</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase.pptx</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Techniques">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">1.Extract spatial data( geospatial bounding box) for each forecast day;
+2. Extract temporal data to make spatial data  time-tagged
+3.Extract data annotations such as organization, location name, etc..
+4.Add visualization features such as altitude, color for each geospatial point</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase: Daily Regional Weather Forecasts in Support of Vortex2</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase.pptx</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Techniques">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">1.Extract spatial data( geospatial bounding box) for each forecast day;
+2. Extract temporal data to make spatial data  time-tagged
+3.Extract data annotations such as organization, location name, etc..
+4.Add visualization features such as altitude, color for each geospatial point</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Reference">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase: Daily Regional Weather Forecasts in Support of Vortex2</v1:value>
+          </v1:property>
+          <v1:property uri="process-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">IEEE Cluster 2013 Visualization Showcase.pptx</v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:process>
+      <v1:process id="Process_3">
+        <v1:annotation>
+          <v1:property uri="process-type">
+            <v1:value>
+              <type>WORKFLOW</type>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="process-workflowID">
+            <v1:value>
+              <workflowID>Vortex2_Visualization</workflowID>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:process>
+    </v1:processes>
+    <v1:artifacts>
+      <v1:artifact id="File_2">
+        <v1:annotation>
+          <v1:property uri="artifact-size">
+            <v1:value>
+              <size>57964953</size>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="artifact-uri">
+            <v1:value>
+              <fileURI>File:///Users/Gabriel/Documents/WWTTelescope/WWT_Visualization.mp4</fileURI>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+        <v1:annotation id="Artifact-Annotation_3">
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Data to Insight Center Video Gallery">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">https://pti.iu.edu/gallery/video/d2i-videos.php</v1:value>
+          </v1:property>
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Youtube URL">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">http://www.youtube.com/watch?v=4lC733j8J0Y</v1:value>
+          </v1:property>
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">The visualization unfolds daily location of regional weather forecast;Bright bars reflect short term regional forecast that had National Weather Service (NWS) issued tornado warning for time in which forecast was valid;All 173 Vortex2 records are visualized with exact coordinate information</v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:artifact>
+      <v1:artifact id="File_1">
+        <v1:annotation>
+          <v1:property uri="artifact-size">
+            <v1:value>
+              <size>21126</size>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="artifact-uri">
+            <v1:value>
+              <fileURI>File:///Users/Gabriel/Documents/WWTTelescope/CDL_mining_spreadsheet.xlsx</fileURI>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:artifact>
+      <v1:artifact id="File_3">
+        <v1:annotation>
+          <v1:property uri="artifact-size">
+            <v1:value>
+              <size>0</size>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="artifact-uri">
+            <v1:value>
+              <fileURI>https://scholarworks.iu.edu/dspace/handle/2022/14983</fileURI>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+        <v1:annotation id="Artifact-Annotation_8">
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Rights">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">Open Database Attribution License</v1:value>
+          </v1:property>
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Rights URL">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">http://opendatacommons.org/licenses/by/</v1:value>
+          </v1:property>
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Owners">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">Plale, Beth; Brewster, Keith; Mattocks, Craig; Bhangale, Ashish; Withana, Eran C.; Herath, Chathura; Terkhorn, Felix; Chandrasekar, Kavitha</v1:value>
+          </v1:property>
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Dates Covered">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">2010/04/30-2010/06/15</v1:value>
+          </v1:property>
+          <v1:property uri="artifact-annotation/EXTERNAL_SOURCE/Abstract">
+            <v1:value xmlns:ns="http://www.dataandsearch.org/karma/2010/08/">The Vortex2 project (http://www.vortex2.org/home/) supported 100 scientists using over 40 science support vehicles participated in a nomadic effort to understand tornados. For the six weeks from May 1st to June 15th, 2010,
+scientists went roaming from state-to-state following severe weather conditions. With the help of meteorologists in the field who initiated boundary conditions,
+ LEAD II (https://portal.leadproject.org/gridsphere/gridsphere) delivered six forecasts per day, starting at 7am CDT, creating up to 600 weather images per day.
+ This information was used by the VORTEX2 field team and the command and control center at the University of Oklahoma to determine when and where tornadoes are most likely to occur
+ and to help the storm chasers get to the right place at the right time. VORTEX2 used an unprecedented fleet of cutting edge instruments to literally surround tornadoes
+ and the supercell thunderstorms that form them. An armada of mobile radars, including the Doppler On Wheels (DOW) from the Center for Severe Weather Research (CSWR),
+ SMART-Radars from the University of Oklahoma, the NOXP radar from the National Severe Storms Laboratory (NSSL), radars from the University of Massachusetts,
+ the Office of Naval Research and Texas Tech University (TTU), 12 mobile mesonet instrumented vehicles from NSSL and CSWR, 38 deployable instruments including Sticknets (TTU),
+ Tornado-Pods (CSWR), 4 disdrometers (University of Colorado (CU)), weather balloon launching vans (NSSL, NCAR and SUNY-Oswego), unmanned aircraft (CU),
+ damage survey teams (CSWR, Lyndon State College, NCAR), and photogrammetry teams (Lyndon State Univesity, CSWR and NCAR), and other instruments.</v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:artifact>
+    </v1:artifacts>
+    <v1:agents>
+      <v1:agent id="Agent_3">
+        <v1:annotation>
+          <v1:property uri="agent-dn">
+            <v1:value>
+              <dn>Quan Zhou</dn>
+            </v1:value>
+          </v1:property>
+          <v1:property uri="agent-email">
+            <v1:value>
+              <email>quzhou@indiana.edu</email>
+            </v1:value>
+          </v1:property>
+        </v1:annotation>
+      </v1:agent>
+    </v1:agents>
+    <v1:causalDependencies>
+      <v1:used>
+        <v1:effect ref="Process_1"/>
+        <v1:role value="File Consumed"/>
+        <v1:cause ref="File_1"/>
+        <v1:time noEarlierThan="2013-08-08T16:00:00.000-04:00" noLaterThan="2013-11-05T15:00:00.000-05:00"/>
+      </v1:used>
+      <v1:used>
+        <v1:effect ref="Process_2"/>
+        <v1:role value="File Consumed"/>
+        <v1:cause ref="File_3"/>
+        <v1:time noEarlierThan="2013-08-08T16:00:00.000-04:00" noLaterThan="2013-08-08T16:00:00.000-04:00"/>
+      </v1:used>
+      <v1:wasDerivedFrom>
+        <v1:effect ref="File_2"/>
+        <v1:cause ref="File_1"/>
+        <v1:time noEarlierThan="2013-11-05T15:00:00.000-05:00" noLaterThan="2013-11-05T15:00:00.000-05:00"/>
+      </v1:wasDerivedFrom>
+      <v1:wasDerivedFrom>
+        <v1:effect ref="File_1"/>
+        <v1:cause ref="File_3"/>
+        <v1:time noEarlierThan="2013-08-08T16:00:00.000-04:00" noLaterThan="2013-08-08T16:00:00.000-04:00"/>
+      </v1:wasDerivedFrom>
+      <v1:wasTriggeredBy>
+        <v1:effect ref="Process_1"/>
+        <v1:cause ref="Process_2"/>
+        <v1:time noEarlierThan="2013-08-08T16:00:00.000-04:00" noLaterThan="2013-11-05T15:00:00.000-05:00"/>
+      </v1:wasTriggeredBy>
+      <v1:wasTriggeredBy>
+        <v1:effect ref="Process_2"/>
+        <v1:cause ref="Process_3"/>
+        <v1:time noEarlierThan="2013-08-08T16:00:00.000-04:00" noLaterThan="2013-08-08T16:00:00.000-04:00"/>
+      </v1:wasTriggeredBy>
+      <v1:wasGeneratedBy>
+        <v1:effect ref="File_1"/>
+        <v1:role value="File Produced"/>
+        <v1:cause ref="Process_2"/>
+        <v1:time noEarlierThan="2013-08-08T16:00:00.000-04:00" noLaterThan="2013-11-05T15:00:00.000-05:00"/>
+      </v1:wasGeneratedBy>
+      <v1:wasGeneratedBy>
+        <v1:effect ref="File_2"/>
+        <v1:role value="File Produced"/>
+        <v1:cause ref="Process_1"/>
+        <v1:time noEarlierThan="2013-11-05T15:00:00.000-05:00" noLaterThan="2013-11-05T15:00:00.000-05:00"/>
+      </v1:wasGeneratedBy>
+      <v1:wasControlledBy>
+        <v1:effect ref="Process_3"/>
+        <v1:role value="ProcessControl"/>
+        <v1:cause ref="Agent_3"/>
+        <v1:startTime noEarlierThan="2013-08-08T16:00:00.000-04:00"/>
+        <v1:endTime noLaterThan="2013-08-08T16:00:00.000-04:00"/>
+      </v1:wasControlledBy>
+    </v1:causalDependencies>
+  </v1:opmGraph>

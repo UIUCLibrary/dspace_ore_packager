@@ -1,0 +1,4 @@
+Source-Organization: Indiana University
+ORE-file-path: /Vortex2_Visualization-oaiore.xml
+ResourceMap-id: http://seadva-test.d2i.indiana.edu/sead-wf/entity/166380
+Aggregation-id: http://seadva-test.d2i.indiana.edu/sead-wf/entity/166381
