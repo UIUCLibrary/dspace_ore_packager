@@ -18,7 +18,7 @@ module DspaceOrePackager
       @ar_ids= @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:aggregates/@rdf:resource")
       # @ars = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']")
       @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
-      # @agg_metadata_id = @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:isDescribedBy/@rdf:resource")
+      @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
 
     end
 
@@ -117,17 +117,24 @@ module DspaceOrePackager
 
     # Aggregated resources
     def processAR
-      ids = @document.xpath("//rdf:Description/@rdf:about")
-      md = Array.new
-      len = @ar_ids.length - 1
-      for i in 0..len
-        if @ar_ids[i].include?@document.xpath("//rdf:Description/@rdf:about") then
-          md[i] = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
-        end
+
+      # all_ar_ids = Array.new
+      # for i in 0..(@ar_ids.length-1)
+      #   all_ar_ids.push(@ar_ids[i].content)
+      # end
+
+      bitstream_terms = Array.new
+      for i in 0..(@ar_ids.length-1)
+        # @ar_ids.each do |ar_id|
+          #if ar_id = @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:aggregates/@rdf:resource") then
+          bitstream_terms << @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]")
+          #end
+        # end
       end
 
-      test = (ids & @ar_ids).empty?
-      puts test
+      puts bitstream_terms.length
+      puts bitstream_terms[0]
+
     end
   end
 end
