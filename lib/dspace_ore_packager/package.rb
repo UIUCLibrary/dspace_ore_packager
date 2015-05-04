@@ -18,7 +18,7 @@ module DspaceOrePackager
       @ar_ids= @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:aggregates/@rdf:resource")
       # @ars = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']")
       @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
-      @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
+      # @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
 
     end
 
@@ -118,22 +118,38 @@ module DspaceOrePackager
     # Aggregated resources
     def processAR
 
-      # all_ar_ids = Array.new
-      # for i in 0..(@ar_ids.length-1)
-      #   all_ar_ids.push(@ar_ids[i].content)
-      # end
-
       bitstream_terms = Array.new
       for i in 0..(@ar_ids.length-1)
-        # @ar_ids.each do |ar_id|
-          #if ar_id = @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:aggregates/@rdf:resource") then
           bitstream_terms << @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]")
-          #end
-        # end
       end
 
-      puts bitstream_terms.length
-      puts bitstream_terms[0]
+      test_key = Array.new
+      test_value = Array.new
+
+        for terms in bitstream_terms[4]
+          # bitstream_terms.each do
+          # extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
+          if terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then
+            name =       ($1).to_s
+            name_value = ($2).to_s
+
+            # extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
+          elsif terms.to_s() =~ /^<(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then
+            name =       ($1).to_s
+            name_value = ($2).to_s
+
+            # extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
+          elsif terms.to_s() =~  /^<(.*?)>(.*)<.*/ and $1.to_s()!= "" then
+            name =       ($1).to_s
+            name_value = ($2).to_s
+          end
+          test_key.push(name)
+          test_value.push(name_value)
+         # end
+      end
+
+      # puts bitstream_terms.length
+      puts test_key + test_value
 
     end
   end
