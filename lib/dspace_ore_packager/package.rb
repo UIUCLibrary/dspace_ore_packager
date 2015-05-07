@@ -88,9 +88,6 @@ module DspaceOrePackager
         key.push(name)
         value.push(name_value)
       end
-      # puts @key
-      # puts @value
-
 
       terms = "["
       len = key.length - 1
@@ -112,6 +109,11 @@ module DspaceOrePackager
                                   {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{login_token}" })
         puts "Response status: #{metadata.code}"
       end
+
+      folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8/'
+      ore_filepath= Dir.glob("#{folder}/*_oaiore.xml")
+      puts ore_filepath
+
     end
 
 
@@ -126,30 +128,51 @@ module DspaceOrePackager
       test_key = Array.new
       test_value = Array.new
 
-        for terms in bitstream_terms[4]
-          # bitstream_terms.each do
-          # extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
-          if terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then
-            name =       ($1).to_s
-            name_value = ($2).to_s
+      for terms in bitstream_terms[0]
+      # for i in 0..bitstream_terms.length-1
+      #   bitstream_terms[i].each do |terms|
+        # extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
+        if terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then
+          name =       ($1).to_s
+          name_value = ($2).to_s
 
-            # extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
-          elsif terms.to_s() =~ /^<(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then
-            name =       ($1).to_s
-            name_value = ($2).to_s
+        elsif terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*/ and $1.to_s()!= "" then
+          name =       ($1).to_s
+          name_value = ($2).to_s
 
-            # extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
-          elsif terms.to_s() =~  /^<(.*?)>(.*)<.*/ and $1.to_s()!= "" then
-            name =       ($1).to_s
-            name_value = ($2).to_s
-          end
-          test_key.push(name)
-          test_value.push(name_value)
-         # end
+          # extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
+        elsif terms.to_s() =~ /^<(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then
+          name =       ($1).to_s
+          name_value = ($2).to_s
+
+          # extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
+        elsif terms.to_s() =~  /^<(.*?)>(.*)<.*/ and $1.to_s()!= "" then
+          name =       ($1).to_s
+          name_value = ($2).to_s
+        end
+        test_key.push(name)
+        test_value.push(name_value)
+        # end
+        # end
       end
 
       # puts bitstream_terms.length
-      puts test_key + test_value
+
+      terms = ''
+      len = test_key.length-1
+
+      for i in 0..len
+        # test_key[i].sub(':','.')
+        terms += "{\"key\":\"#{test_key[i]}\", \"value\":\"#{test_value[i]}\", \"language\":\"en\"}"
+        terms += ','
+      end
+
+      # puts test_value
+      puts bitstream_terms
+
+      # folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
+      # filepath= Dir.glob("#{folder}/*/*")
+      # puts filepath
 
     end
   end
