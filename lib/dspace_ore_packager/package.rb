@@ -122,15 +122,19 @@ module DspaceOrePackager
 
       bitstream_terms = Array.new
       for i in 0..(@ar_ids.length-1)
-          bitstream_terms << @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]")
+          @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]").each do |node|
+            name = node.xpath("name()")
+            value = node.name == "contributor" ? node.xpath("foaf:name/text()") : node.xpath("text()")
+            puts "#{name} = #{value}"
+          end
       end
 
       test_key = Array.new
       test_value = Array.new
 
-      for terms in bitstream_terms[0]
-      # for i in 0..bitstream_terms.length-1
-      #   bitstream_terms[i].each do |terms|
+      # for terms in bitstream_terms[0]
+      for i in 0..bitstream_terms.length-1
+        bitstream_terms[i].each do |terms|
         # extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
         if terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then
           name =       ($1).to_s
@@ -152,11 +156,11 @@ module DspaceOrePackager
         end
         test_key.push(name)
         test_value.push(name_value)
-        # end
-        # end
+        end
       end
+      # end
 
-      # puts bitstream_terms.length
+      #puts bitstream_terms
 
       terms = ''
       len = test_key.length-1
@@ -168,7 +172,7 @@ module DspaceOrePackager
       end
 
       # puts test_value
-      puts bitstream_terms
+      # puts terms
 
       # folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
       # filepath= Dir.glob("#{folder}/*/*")
