@@ -17,7 +17,7 @@ module DspaceOrePackager
       # @agg =  @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']")
       @ar_ids= @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:aggregates/@rdf:resource")
       # @ars = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']")
-      @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
+      # @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
       # @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
 
     end
@@ -26,9 +26,7 @@ module DspaceOrePackager
       #needs to be implemented
     end
 
-    def processAgg
-
-      #Login
+    def login
       host = 'http://localhost:8080'
       user = 'njkhan505@gmail.com'
       pwd = '123456'
@@ -42,6 +40,10 @@ module DspaceOrePackager
       rescue => e
         puts "ERROR: #{e}"
       end
+    end
+
+
+    def getColID
 
       # Retrieve collection id to create an item
       handle_id = ask("Enter handle ID of the collection: ")
@@ -52,6 +54,10 @@ module DspaceOrePackager
         collectionid = "#{getid}"[/.*>(.*)</,1]
         puts "collection id is: #{collectionid}"
       end
+    end
+
+
+    def createItem
 
       #Create an item
       puts 'Creating an item.'
@@ -64,35 +70,26 @@ module DspaceOrePackager
         itemid = "#{getitemid["id"]}"
         puts "Item ID is: #{itemid}"
       end
+    end
 
-      # Extract
+
+    def processAgg
+
+      # Extract aggregator metadata
       key = Array.new
       value = Array.new
       language = 'en'
-      for term in @agg_dcterms
-        # extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
-        if term.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then
-          name =       ($1).to_s
-          name_value = ($2).to_s
 
-          # extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
-        elsif term.to_s() =~ /^<(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then
-          name =       ($1).to_s
-          name_value = ($2).to_s
-
-          # extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
-        elsif term.to_s() =~  /^<(.*?)>(.*)<.*/ and $1.to_s()!= "" then
-          name =       ($1).to_s
-          name_value = ($2).to_s
-        end
-        key.push(name)
-        value.push(name_value)
+      @agg_dcterms.each do |node|
+        key_name = node.xpath("name()").sub!(':','.')
+        key_value = node.name == "creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
+        key << key_name
+        value << key_value
       end
 
       terms = "["
       len = key.length - 1
       for i in 0..len
-        key[i].sub!(':','.')
         terms += "{\"key\":\"#{key[i]}\", \"value\":\"#{value[i]}\", \"language\":\"#{language}\"}"
         terms += ','
       end
@@ -101,6 +98,10 @@ module DspaceOrePackager
       terms += "]"
 
       puts terms.to_s
+    end
+
+
+    def updateMetadata
 
       #Update metadata
       puts 'Updating item metadata'
@@ -120,59 +121,14 @@ module DspaceOrePackager
     # Aggregated resources
     def processAR
 
-      bitstream_terms = Array.new
       for i in 0..(@ar_ids.length-1)
-          @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]").each do |node|
-            name = node.xpath("name()")
-            value = node.name == "contributor" ? node.xpath("foaf:name/text()") : node.xpath("text()")
-            puts "#{name} = #{value}"
-          end
-      end
-
-      test_key = Array.new
-      test_value = Array.new
-
-      # for terms in bitstream_terms[0]
-      for i in 0..bitstream_terms.length-1
-        bitstream_terms[i].each do |terms|
-        # extract patterns <dcterms:creator attribute="something"><foaf:name>something</foaf:name></dcterms:creator>, where the element has sub-element
-        if terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*>\n\s*.*\n\s*<.*>/ then
-          name =       ($1).to_s
-          name_value = ($2).to_s
-
-        elsif terms.to_s() =~ /<(.*?)\s.*">\n\s*<.*>(.*)<.*/ and $1.to_s()!= "" then
-          name =       ($1).to_s
-          name_value = ($2).to_s
-
-          # extract patterns like <dcterms:title attribute="something">...</dcterms:title>, where the element has attribute
-        elsif terms.to_s() =~ /^<(.*?)\s.*>(.*)<.*/ and $1.to_s()!= "" then
-          name =       ($1).to_s
-          name_value = ($2).to_s
-
-          # extract patterns like <dcterms:abstract>...</dcterms:abstract>, where there is no attribute of element
-        elsif terms.to_s() =~  /^<(.*?)>(.*)<.*/ and $1.to_s()!= "" then
-          name =       ($1).to_s
-          name_value = ($2).to_s
-        end
-        test_key.push(name)
-        test_value.push(name_value)
+        @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]").each do |node|
+          name = node.xpath("name()")
+          value = node.name == "contributor" ? node.xpath("foaf:name/text()") : node.xpath("text()")
+          puts "#{name} = #{value}"
         end
       end
-      # end
 
-      #puts bitstream_terms
-
-      terms = ''
-      len = test_key.length-1
-
-      for i in 0..len
-        # test_key[i].sub(':','.')
-        terms += "{\"key\":\"#{test_key[i]}\", \"value\":\"#{test_value[i]}\", \"language\":\"en\"}"
-        terms += ','
-      end
-
-      # puts test_value
-      # puts terms
 
       # folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
       # filepath= Dir.glob("#{folder}/*/*")
