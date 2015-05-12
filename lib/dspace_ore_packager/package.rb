@@ -19,7 +19,7 @@ module DspaceOrePackager
       # @ars = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']")
       # @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
       # @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
-
+      @language = 'en'
     end
 
     def validate
@@ -76,28 +76,13 @@ module DspaceOrePackager
     def processAgg
 
       # Extract aggregator metadata
-      key = Array.new
-      value = Array.new
-      language = 'en'
+      content = @agg_dcterms.map{|node|
+        name = node.xpath("name()").sub!(':','.')
+        value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
+        {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
+      }
+      puts content.to_json
 
-      @agg_dcterms.each do |node|
-        key_name = node.xpath("name()").sub!(':','.')
-        key_value = node.name == "creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
-        key << key_name
-        value << key_value
-      end
-
-      terms = "["
-      len = key.length - 1
-      for i in 0..len
-        terms += "{\"key\":\"#{key[i]}\", \"value\":\"#{value[i]}\", \"language\":\"#{language}\"}"
-        terms += ','
-      end
-
-      terms = terms.chop
-      terms += "]"
-
-      puts terms.to_s
     end
 
 
@@ -121,13 +106,20 @@ module DspaceOrePackager
     # Aggregated resources
     def processAR
 
+      # puts @ar_metadata
+      collect_all = []
       for i in 0..(@ar_ids.length-1)
-        @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]").each do |node|
-          name = node.xpath("name()")
-          value = node.name == "contributor" ? node.xpath("foaf:name/text()") : node.xpath("text()")
-          puts "#{name} = #{value}"
-        end
+        ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]")
+        content = ar_metadata.map{|node|
+          name = node.xpath("name()").sub!(':','.')
+          value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
+          {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
+          # {'value'=>"#{value}"}
+        }
+        collect_all << content
       end
+      # puts content.to_json
+      puts collect_all.to_json
 
 
       # folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'

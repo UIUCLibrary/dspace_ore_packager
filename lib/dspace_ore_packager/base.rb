@@ -5,7 +5,6 @@ module DspaceOrePackager
       dop = Packager.new(ore_xml)
       # dop.processAgg
       dop.processAR
-
     end
   end
 end
