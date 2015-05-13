@@ -19,6 +19,8 @@ module DspaceOrePackager
       # @ars = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']")
       # @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
       # @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
+
+      @host = 'http://localhost:8080'
       @language = 'en'
     end
 
@@ -27,15 +29,14 @@ module DspaceOrePackager
     end
 
     def login
-      host = 'http://localhost:8080'
       user = 'njkhan505@gmail.com'
       pwd = '123456'
       begin
-        response = RestClient.post("#{host}/rest/login", {"email" => "#{user}", "password" => "#{pwd}"}.to_json,
+        response = RestClient.post("#{@host}/rest/login", {"email" => "#{user}", "password" => "#{pwd}"}.to_json,
                                    {:content_type => 'application/json',
                                     :accept => 'application/json'})
-        login_token = response.to_str
-        puts "Your login token is: #{login_token}"
+        @login_token = response.to_str
+        puts "Your login token is: #{@login_token}"
 
       rescue => e
         puts "ERROR: #{e}"
@@ -48,11 +49,11 @@ module DspaceOrePackager
       # Retrieve collection id to create an item
       handle_id = ask("Enter handle ID of the collection: ")
       begin
-        collection = RestClient.get("#{host}/rest/handle/2142/#{handle_id}")
+        collection = RestClient.get("#{@host}/rest/handle/2142/#{handle_id}")
         doc = Nokogiri::XML(collection)
         getid = doc.xpath("//collection/id")
-        collectionid = "#{getid}"[/.*>(.*)</,1]
-        puts "collection id is: #{collectionid}"
+        @collectionid = "#{getid}"[/.*>(.*)</,1]
+        puts "collection id is: #{@collectionid}"
       end
     end
 
@@ -62,27 +63,14 @@ module DspaceOrePackager
       #Create an item
       puts 'Creating an item.'
       begin
-        item = RestClient.post("#{host}/rest/collections/#{collectionid}/items",{"type" => "item"}.to_json,
-                               {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{login_token}" })
+        item = RestClient.post("#{@host}/rest/collections/#{@collectionid}/items",{"type" => "item"}.to_json,
+                               {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{@login_token}" })
         puts item.to_str
         puts "Response status: #{item.code}"
         getitemid = JSON.parse(item)
-        itemid = "#{getitemid["id"]}"
-        puts "Item ID is: #{itemid}"
+        @itemid = "#{getitemid["id"]}"
+        puts "Item ID is: #{@itemid}"
       end
-    end
-
-
-    def processAgg
-
-      # Extract aggregator metadata
-      content = @agg_dcterms.map{|node|
-        name = node.xpath("name()").sub!(':','.')
-        value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
-        {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
-      }
-      puts content.to_json
-
     end
 
 
@@ -91,17 +79,48 @@ module DspaceOrePackager
       #Update metadata
       puts 'Updating item metadata'
       begin
-        metadata = RestClient.put("#{host}/rest/items/#{itemid}/metadata", "#{terms}",
-                                  {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{login_token}" })
+        metadata = RestClient.put("#{@host}/rest/items/#{@itemid}/metadata", "#{@content.to_json}",
+                                  {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{@login_token}" })
         puts "Response status: #{metadata.code}"
       end
 
-      folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8/'
+    end
+
+    def postAggBitstream
+      folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
       ore_filepath= Dir.glob("#{folder}/*_oaiore.xml")
-      puts ore_filepath
+      puts ore_filepath[0]
+
+      file_name = File.basename("#{ore_filepath[0]}")
+      puts "#{file_name}"
+
+      begin
+        bitstream = RestClient.post("#{@host}/rest/items/55403/bitstreams?name=#{file_name}",
+                                    {
+                                        :transfer =>{
+                                            :type => 'bitstream'
+                                        },
+                                        :upload => {
+                                        :file => File.new("#{ore_filepath[0]}",'rb')
+                                    }
+                                     } ,{:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{@login_token}" })
+        puts "Response status: #{bitstream.code}"
+      end
 
     end
 
+
+    def processAgg
+
+      # Extract aggregator metadata
+      @content = @agg_dcterms.map{|node|
+        name = node.xpath("name()").sub!(':','.')
+        value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
+        {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
+      }
+      puts @content.to_json
+
+    end
 
     # Aggregated resources
     def processAR
@@ -114,7 +133,6 @@ module DspaceOrePackager
           name = node.xpath("name()").sub!(':','.')
           value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
           {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
-          # {'value'=>"#{value}"}
         }
         collect_all << content
       end
