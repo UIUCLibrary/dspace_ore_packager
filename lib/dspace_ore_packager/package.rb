@@ -17,7 +17,7 @@ module DspaceOrePackager
       # @agg =  @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']")
       @ar_ids= @document.xpath("//rdf:Description[rdf:type/@rdf:resource='#{@aggregation_uri}']/ore:aggregates/@rdf:resource")
       # @ars = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']")
-      # @ars_dcterms = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:')]")
+      @ar_titles = @document.xpath("//rdf:Description[ore:isAggregatedBy='#{@agg_id}']/*[starts-with(name(),'dcterms:title')]")
       # @ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[0]}']/*[starts-with(name(),'dcterms:')]")
 
       @host = 'http://localhost:8080'
@@ -95,7 +95,7 @@ module DspaceOrePackager
       puts "#{file_name}"
 
       begin
-        bitstream = RestClient.post("#{@host}/rest/items/55403/bitstreams?name=#{file_name}",
+        bitstream = RestClient.post("#{@host}/rest/items/#{@itemid}/bitstreams?name=#{file_name}",
                                     {
                                         :transfer =>{
                                             :type => 'bitstream'
@@ -122,29 +122,67 @@ module DspaceOrePackager
 
     end
 
-    # Aggregated resources
+
+    # Get metadata of the aggregated resources
     def processAR
 
       # puts @ar_metadata
       collect_all = []
       for i in 0..(@ar_ids.length-1)
         ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]")
-        content = ar_metadata.map{|node|
+        get_armetadata = ar_metadata.map{|node|
           name = node.xpath("name()").sub!(':','.')
           value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
           {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
         }
-        collect_all << content
+
+        collect_all << get_armetadata
       end
       # puts content.to_json
       puts collect_all.to_json
+    end
 
 
-      # folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
-      # filepath= Dir.glob("#{folder}/*/*")
-      # puts filepath
+    def post_arbitstreams
+      login
+      getColID
+
+      folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
+      filepaths= Dir.glob("#{folder}/*/*")
+
+      filenames = []
+      filepaths.each do|fname|
+        files = File.basename(fname)
+        filenames << files
+      end
+
+
+      titles = @ar_titles.collect { |dcterms| dcterms.child.to_s }
+      # puts title
+
+      for i in 0..(filepaths.length-1)
+        (filenames & titles).each do |file|
+
+          createItem
+
+          #postBitstream
+          begin
+            bitstream = RestClient.post("#{@host}/rest/items/#{@itemid}/bitstreams?name=#{file.gsub(/\s/,'_')}",
+                                        {
+                                            :transfer =>{
+                                                :type => 'bitstream'
+                                            },
+                                            :upload => {
+                                                :file => File.new("#{filepaths[i]}",'rb')
+                                            }
+                                        } ,{:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{@login_token}" })
+            puts "Response status: #{bitstream.code}"
+          end
+        end
+      end
 
     end
+
   end
 end
 

@@ -16,7 +16,7 @@
   <rdf:Description rdf:about="http://sead-test/fakeUri/cce29a32-1cbb-4859-bf03-15ecc8db97bc">
     <ore:isAggregatedBy>http://sead-test/fakeUri/0489a707-d428-4db4-8ce0-1ace548bc653_Aggregation</ore:isAggregatedBy>
     <dcterms:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://sead-test/fakeUri/cce29a32-1cbb-4859-bf03-15ecc8db97bc</dcterms:identifier>
-    <dcterms:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vortex Mining</dcterms:title>
+    <dcterms:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vortex_Mining.xlsx</dcterms:title>
     <mets:FLocat  rdf:datatype="http://www.w3.org/2001/XMLSchema#string">data/Vortex_Mining.xlsx</mets:FLocat>
     <dcterms:source rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://scholarworks.iu.edu/dspace/handle/2022/14983</dcterms:source>
     <dcterms:abstract rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spreadsheet that contains data extracted from Vortex2 dataset + added visualization features such as altitude and color for each geospatial point</dcterms:abstract>
