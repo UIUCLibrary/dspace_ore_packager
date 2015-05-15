@@ -86,6 +86,7 @@ module DspaceOrePackager
 
     end
 
+
     def postAggBitstream
       folder = '/Users/njkhan2/Projects/dspace_ore_packager/test/d6d250ba-e54d-4ae0-937d-c23d5e8b5de8'
       ore_filepath= Dir.glob("#{folder}/*_oaiore.xml")
@@ -128,22 +129,34 @@ module DspaceOrePackager
 
       # puts @ar_metadata
       collect_all = []
+      values = []
       for i in 0..(@ar_ids.length-1)
         ar_metadata = @document.xpath("//rdf:Description[@rdf:about='#{@ar_ids[i]}']/*[starts-with(name(),'dcterms:')]")
         get_armetadata = ar_metadata.map{|node|
           name = node.xpath("name()").sub!(':','.')
           value = node.name == "contributor"||node.name =="creator" ? node.xpath("foaf:name/text()") : node.xpath("text()")
           {'key'=>"#{name}", 'value'=>"#{value}", 'language'=>"#{@language}"}
-        }
 
+          # values << "#{value}"
+        }
         collect_all << get_armetadata
+        # if (filenames & values) then
+        #   puts filenames
+        #   begin
+        #     metadata = RestClient.put("#{@host}/rest/items/#{@itemid}/metadata", "#{get_armetadata.to_json}",
+        #                               {:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{@login_token}" })
+        #     puts "Response status: #{metadata.code}"
+        #   end
+        # end
+        # break
       end
-      # puts content.to_json
+
       puts collect_all.to_json
     end
 
 
     def post_arbitstreams
+
       login
       getColID
 
@@ -157,17 +170,15 @@ module DspaceOrePackager
       end
 
 
-      titles = @ar_titles.collect { |dcterms| dcterms.child.to_s }
-      # puts title
+      # titles = @ar_titles.collect { |dcterms| dcterms.child.to_s }
 
       for i in 0..(filepaths.length-1)
-        (filenames & titles).each do |file|
 
           createItem
 
-          #postBitstream
+          # postBitstream
           begin
-            bitstream = RestClient.post("#{@host}/rest/items/#{@itemid}/bitstreams?name=#{file.gsub(/\s/,'_')}",
+            bitstream = RestClient.post("#{@host}/rest/items/#{@itemid}/bitstreams?name=#{filenames[i].gsub(/\s/,'_')}",
                                         {
                                             :transfer =>{
                                                 :type => 'bitstream'
@@ -178,7 +189,7 @@ module DspaceOrePackager
                                         } ,{:content_type => 'application/json', :accept => 'application/json', :rest_dspace_token => "#{@login_token}" })
             puts "Response status: #{bitstream.code}"
           end
-        end
+
       end
 
     end

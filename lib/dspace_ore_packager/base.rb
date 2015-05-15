@@ -12,8 +12,8 @@ module DspaceOrePackager
       # dop.postAggBitstream
 
 
-      # dop.processAR
-      dop.post_arbitstreams
+      dop.processAR
+      # dop.post_arbitstreams
     end
   end
 end
